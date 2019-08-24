@@ -76,7 +76,7 @@ func (st *Stack) Pop() (interface{}, error) {
 		old := baseBlock.previous
 		if old != nil {
 			st.baseBlock = nil
-			st.cap -= 5
+			st.cap -= st.size
 			st.baseBlock = baseBlock.previous
 		} else {
 			return 0, ErrNoItem
