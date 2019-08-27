@@ -17,11 +17,11 @@ func Test(t *testing.T) {
 		t.Errorf("Length should be 0")
 	}
 
-	if val, _ := s.Peek(); val.(int) != 1 {
+	if val, _ := s.Peek(); val != 1 {
 		t.Errorf("Top item on the stack should be 1")
 	}
 
-	if val, _ := s.Pop(); val.(int) != 1 {
+	if val, _ := s.Pop(); val != 1 {
 		t.Errorf("Top item should have been 1")
 	}
 
@@ -36,7 +36,7 @@ func Test(t *testing.T) {
 		t.Errorf("Length should be 2")
 	}
 
-	if val, _ := s.Peek(); val.(int) != 2 {
+	if val, _ := s.Peek(); val != 2 {
 		t.Errorf("Top of the stack should be 2")
 	}
 }

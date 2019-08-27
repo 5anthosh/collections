@@ -4,10 +4,14 @@ import (
 	"errors"
 )
 
+//Item : Change it into what data you want to store
+type Item int
+
 //ErrNoItem #
 var ErrNoItem = errors.New("No Item to pop")
 
 //Stack is simple LIFO data structure
+// It uses block based list to store data
 type Stack struct {
 	cap       int
 	len       int
@@ -17,11 +21,11 @@ type Stack struct {
 
 type block struct {
 	len      int
-	base     []interface{}
+	base     []Item
 	previous *block
 }
 
-func (stb *block) add(item interface{}) {
+func (stb *block) add(item Item) {
 	stb.base[stb.len] = item
 	stb.len++
 }
@@ -44,7 +48,7 @@ func (st *Stack) addBlock() {
 
 func newBlock(size int) *block {
 	stb := new(block)
-	stb.base = make([]interface{}, size)
+	stb.base = make([]Item, size)
 	return stb
 }
 
@@ -61,7 +65,7 @@ func (st *Stack) IsEmpty() bool {
 }
 
 //Push pushes new item on the top of the stack
-func (st *Stack) Push(i interface{}) {
+func (st *Stack) Push(i Item) {
 	if st.baseBlock == nil || st.baseBlock.len >= st.size {
 		st.addBlock()
 	}
@@ -70,7 +74,7 @@ func (st *Stack) Push(i interface{}) {
 }
 
 //Pop removes Last in item and return it
-func (st *Stack) Pop() (interface{}, error) {
+func (st *Stack) Pop() (Item, error) {
 	baseBlock := st.baseBlock
 	if baseBlock.isBlockEmpty() {
 		old := baseBlock.previous
@@ -88,7 +92,7 @@ func (st *Stack) Pop() (interface{}, error) {
 }
 
 //Peek lets peek top of the stack
-func (st *Stack) Peek() (interface{}, error) {
+func (st *Stack) Peek() (Item, error) {
 	baseBlock := st.baseBlock
 	if baseBlock.isBlockEmpty() {
 		old := baseBlock.previous
