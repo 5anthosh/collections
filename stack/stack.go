@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-//Item : Change it into what data you want to store
+//Item : hack it into what data you want to store
 type Item int
 
 //ErrNoItem #
