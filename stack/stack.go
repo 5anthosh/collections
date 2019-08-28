@@ -4,19 +4,29 @@ import (
 	"errors"
 )
 
-//Item : Change it into what data you want to store
-type Item int
+//Item : Hack it into what data you want to store
+type Item interface{}
 
 //ErrNoItem #
 var ErrNoItem = errors.New("No Item to pop")
 
-//Stack is simple LIFO data structure
+//blockBasedListStack is simple LIFO data structure
 // It uses block based list to store data
-type Stack struct {
+type blockBasedListStack struct {
 	cap       int
 	len       int
 	size      int
 	baseBlock *block
+}
+
+//Stack is simple LIFO data structure
+type Stack interface {
+	Pop() (Item, error)
+	Peek() (Item, error)
+	Len() int
+	Cap() int
+	IsEmpty() bool
+	Push(Item) error
 }
 
 type block struct {
@@ -37,7 +47,7 @@ func (stb *block) isEmpty() bool {
 func (stb *block) isBlockEmpty() bool {
 	return stb.len == 0
 }
-func (st *Stack) addBlock() {
+func (st *blockBasedListStack) addBlock() {
 	newblock := newBlock(st.size)
 	if st.baseBlock != nil {
 		newblock.previous = st.baseBlock
@@ -52,29 +62,35 @@ func newBlock(size int) *block {
 	return stb
 }
 
-//New creates new Stack with size
-func New(size int) *Stack {
-	st := new(Stack)
+//NewBlockBasedStack creates new Stack with size
+func NewBlockBasedStack(size int) Stack {
+	st := new(blockBasedListStack)
 	st.size = size
 	return st
 }
 
+//New creates new Stack with size
+func New(size int) Stack {
+	return NewBlockBasedStack(size)
+}
+
 //IsEmpty checks whether stack is empty
-func (st *Stack) IsEmpty() bool {
+func (st *blockBasedListStack) IsEmpty() bool {
 	return st.baseBlock.isEmpty()
 }
 
 //Push pushes new item on the top of the stack
-func (st *Stack) Push(i Item) {
+func (st *blockBasedListStack) Push(i Item) error {
 	if st.baseBlock == nil || st.baseBlock.len >= st.size {
 		st.addBlock()
 	}
 	st.baseBlock.add(i)
 	st.len++
+	return nil
 }
 
 //Pop removes Last in item and return it
-func (st *Stack) Pop() (Item, error) {
+func (st *blockBasedListStack) Pop() (Item, error) {
 	baseBlock := st.baseBlock
 	if baseBlock.isBlockEmpty() {
 		old := baseBlock.previous
@@ -92,7 +108,7 @@ func (st *Stack) Pop() (Item, error) {
 }
 
 //Peek lets peek top of the stack
-func (st *Stack) Peek() (Item, error) {
+func (st *blockBasedListStack) Peek() (Item, error) {
 	baseBlock := st.baseBlock
 	if baseBlock.isBlockEmpty() {
 		old := baseBlock.previous
@@ -105,11 +121,11 @@ func (st *Stack) Peek() (Item, error) {
 }
 
 //Cap returns current capacity of the stack
-func (st *Stack) Cap() int {
+func (st *blockBasedListStack) Cap() int {
 	return st.cap
 }
 
 //Len returns length of stack
-func (st *Stack) Len() int {
+func (st *blockBasedListStack) Len() int {
 	return st.len
 }

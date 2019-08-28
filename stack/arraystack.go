@@ -1,42 +1,37 @@
-package arraystack
+package stack
 
 import (
 	"errors"
 	"math"
-
-	"github.com/5anthosh/collections/stack"
 )
-
-//Item : Change it into what data you want to store
-type Item int
 
 const maxSize = math.MaxUint32
 
 //ErrMaxCap #
 var ErrMaxCap = errors.New("cap out of range")
 
-//ArrayStack is simple LIFO data structure
+//arrayStack is simple LIFO data structure
 // it uses a growable buffer
-type ArrayStack struct {
+type arrayStack struct {
 	cap  int
 	top  int
 	base []Item
 }
 
-//New #
-func New(size int) ArrayStack {
-	var as ArrayStack
+//ArrayBasedStack #
+func ArrayBasedStack(size int) Stack {
+	as := new(arrayStack)
 	as.base = make([]Item, size)
 	as.cap = size
 	return as
 }
 
 //IsEmpty #
-func (as *ArrayStack) IsEmpty() bool {
+func (as *arrayStack) IsEmpty() bool {
 	return as.top == 0
 }
 
-func (as *ArrayStack) grow(minCap int) error {
+func (as *arrayStack) grow(minCap int) error {
 	newCap := as.cap << 1
 	if minCap > newCap {
 		newCap = minCap
@@ -52,7 +47,7 @@ func (as *ArrayStack) grow(minCap int) error {
 }
 
 //Push #
-func (as *ArrayStack) Push(item Item) error {
+func (as *arrayStack) Push(item Item) error {
 	var err error
 
 	if as.top == as.cap {
@@ -67,30 +62,30 @@ func (as *ArrayStack) Push(item Item) error {
 }
 
 //Pop #
-func (as *ArrayStack) Pop() (Item, error) {
+func (as *arrayStack) Pop() (Item, error) {
 	var item Item
 	if as.IsEmpty() {
-		return item, stack.ErrNoItem
+		return item, ErrNoItem
 	}
 	as.top--
 	return as.base[as.top], nil
 }
 
 //Peek #
-func (as *ArrayStack) Peek() (Item, error) {
+func (as *arrayStack) Peek() (Item, error) {
 	var item Item
 	if as.IsEmpty() {
-		return item, stack.ErrNoItem
+		return item, ErrNoItem
 	}
 	return as.base[as.top-1], nil
 }
 
 //Cap returns current capacity of the stack
-func (as *ArrayStack) Cap() int {
+func (as *arrayStack) Cap() int {
 	return as.cap
 }
 
 //Len returns length of stack
-func (as *ArrayStack) Len() int {
+func (as *arrayStack) Len() int {
 	return as.top
 }

@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func Test(t *testing.T) {
-	s := New(5)
+func TestStack(t *testing.T) {
+	s := NewBlockBasedStack(5)
 
 	if s.Len() != 0 {
 		t.Errorf("Length of an empty stack should be 0")

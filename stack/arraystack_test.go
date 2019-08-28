@@ -1,11 +1,11 @@
-package arraystack
+package stack
 
 import (
 	"testing"
 )
 
-func Test(t *testing.T) {
-	s := New(3)
+func TestArrayStack(t *testing.T) {
+	s := ArrayBasedStack(3)
 
 	if s.Len() != 0 {
 		t.Errorf("Length of an empty stack should be 0")
