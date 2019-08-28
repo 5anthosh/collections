@@ -47,18 +47,17 @@ func (as *arrayStack) grow(minCap int) error {
 }
 
 //Push #
-func (as *arrayStack) Push(item Item) error {
+func (as *arrayStack) Push(item Item) {
 	var err error
 
 	if as.top == as.cap {
 		err = as.grow(as.cap + 1)
 		if err != nil {
-			return err
+			panic(ErrMaxCap)
 		}
 	}
 	as.base[as.top] = item
 	as.top++
-	return nil
 }
 
 //Pop #

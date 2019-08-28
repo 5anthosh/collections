@@ -26,7 +26,7 @@ type Stack interface {
 	Len() int
 	Cap() int
 	IsEmpty() bool
-	Push(Item) error
+	Push(Item)
 }
 
 type block struct {
@@ -80,13 +80,12 @@ func (st *blockBasedListStack) IsEmpty() bool {
 }
 
 //Push pushes new item on the top of the stack
-func (st *blockBasedListStack) Push(i Item) error {
+func (st *blockBasedListStack) Push(i Item) {
 	if st.baseBlock == nil || st.baseBlock.len >= st.size {
 		st.addBlock()
 	}
 	st.baseBlock.add(i)
 	st.len++
-	return nil
 }
 
 //Pop removes Last in item and return it
