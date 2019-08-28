@@ -1,4 +1,5 @@
 # collections
 - Stack
-  - Stack (Based on block list)
-  - Array (Based on array)
+  - Based on block list
+  - Based on array
+  - Based on List
