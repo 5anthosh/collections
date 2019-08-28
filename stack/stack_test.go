@@ -6,7 +6,19 @@ import (
 
 func TestStack(t *testing.T) {
 	s := NewBlockBasedStack(5)
+	testcases(s, t)
+}
+func TestArrayStack(t *testing.T) {
+	s := ArrayBasedStack(3)
+	testcases(s, t)
+}
 
+func TestListBasedStack(t *testing.T) {
+	s := ListBasedStack()
+	testcases(s, t)
+}
+
+func testcases(s Stack, t *testing.T) {
 	if s.Len() != 0 {
 		t.Errorf("Length of an empty stack should be 0")
 	}
